@@ -83,3 +83,4 @@
 - [x] KG-14 Runbooks (cert-rotation, ec2-deploy, auto-recovery alarm) — approved (2026-06-11)
 
 - [x] SRS approved by Faraz
+- [x] Design docs approved by Faraz
