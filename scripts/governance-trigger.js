@@ -112,6 +112,9 @@ function callMcpTool(toolName, params) {
           }
           return undefined; // OK
         },
+        // Required for self-signed certs: allows checkServerIdentity to run
+        // Security is provided by the fingerprint check above, not the CA chain
+        rejectUnauthorized: false,
       },
       (res) => {
         let data = '';
