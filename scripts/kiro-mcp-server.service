@@ -1,0 +1,21 @@
+[Unit]
+Description=kiro-governance MCP Server
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/opt/kiro-governance
+ExecStart=/usr/bin/node /opt/kiro-governance/dist/index.js
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=443
+Environment=TLS_CERT_PATH=/opt/kiro-governance/cert.pem
+Environment=TLS_KEY_PATH=/opt/kiro-governance/key.pem
+Environment=LOG_LEVEL=info
+EnvironmentFile=/opt/kiro-governance/.env
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target

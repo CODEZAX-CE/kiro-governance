@@ -1,0 +1,124 @@
+{
+  "vpc-provider:account=504649076991:filter.isDefault=true:region=us-east-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-09c00748cf2a20907",
+    "vpcCidrBlock": "172.31.0.0/16",
+    "ownerAccountId": "504649076991",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Public",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-0915b9244db0f7b26",
+            "cidr": "172.31.16.0/20",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-09d40f3b1baf0c77b"
+          },
+          {
+            "subnetId": "subnet-012eaf87652624a31",
+            "cidr": "172.31.200.0/24",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-09d40f3b1baf0c77b"
+          },
+          {
+            "subnetId": "subnet-0f2d69b1ed0434ea0",
+            "cidr": "172.31.201.0/24",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-09d40f3b1baf0c77b"
+          },
+          {
+            "subnetId": "subnet-03c8969fb15fc6e0a",
+            "cidr": "172.31.32.0/20",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-08ed8cb3f3c842830"
+          },
+          {
+            "subnetId": "subnet-05a9b56ceb985953d",
+            "cidr": "172.31.0.0/20",
+            "availabilityZone": "us-east-1c",
+            "routeTableId": "rtb-09d40f3b1baf0c77b"
+          },
+          {
+            "subnetId": "subnet-0f94882b16cd4cdbb",
+            "cidr": "172.31.80.0/20",
+            "availabilityZone": "us-east-1d",
+            "routeTableId": "rtb-08ed8cb3f3c842830"
+          },
+          {
+            "subnetId": "subnet-00de1b46a53335643",
+            "cidr": "172.31.48.0/20",
+            "availabilityZone": "us-east-1e",
+            "routeTableId": "rtb-08ed8cb3f3c842830"
+          },
+          {
+            "subnetId": "subnet-0f0e887cf1e484187",
+            "cidr": "172.31.64.0/20",
+            "availabilityZone": "us-east-1f",
+            "routeTableId": "rtb-08ed8cb3f3c842830"
+          }
+        ]
+      },
+      {
+        "name": "Isolated",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-0cee9ee25f9df7d98",
+            "cidr": "172.31.113.128/25",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-02d8320bbe8ae4fb3"
+          },
+          {
+            "subnetId": "subnet-023e06e4650422b0e",
+            "cidr": "172.31.114.0/25",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-02d8320bbe8ae4fb3"
+          },
+          {
+            "subnetId": "subnet-066d769588e62e6d0",
+            "cidr": "172.31.113.0/25",
+            "availabilityZone": "us-east-1c",
+            "routeTableId": "rtb-02d8320bbe8ae4fb3"
+          },
+          {
+            "subnetId": "subnet-0b5f245d077287ce7",
+            "cidr": "172.31.112.0/25",
+            "availabilityZone": "us-east-1d",
+            "routeTableId": "rtb-02d8320bbe8ae4fb3"
+          },
+          {
+            "subnetId": "subnet-0b3d2c4e8e9b0a0e9",
+            "cidr": "172.31.112.128/25",
+            "availabilityZone": "us-east-1f",
+            "routeTableId": "rtb-02d8320bbe8ae4fb3"
+          }
+        ]
+      },
+      {
+        "name": "Private",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-05c178319cfa2db7b",
+            "cidr": "172.31.150.0/26",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-08ed8cb3f3c842830"
+          },
+          {
+            "subnetId": "subnet-0808e52621baf169a",
+            "cidr": "172.31.96.0/20",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-08ed8cb3f3c842830"
+          },
+          {
+            "subnetId": "subnet-043300e18d173f8fb",
+            "cidr": "172.31.145.0/26",
+            "availabilityZone": "us-east-1c",
+            "routeTableId": "rtb-08ed8cb3f3c842830"
+          }
+        ]
+      }
+    ]
+  }
+}

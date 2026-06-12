@@ -1,0 +1,41 @@
+name: Governance Trigger
+
+on:
+  push:
+    branches: [main]
+    paths: ['docs/project-progress.md']
+
+permissions:
+  contents: read
+
+jobs:
+  governance-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout with history for diff
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install shared package dependencies
+        run: npm ci
+        working-directory: packages/shared
+
+      - name: Build shared package
+        run: npm run build
+        working-directory: packages/shared
+
+      - name: Extract diff and process macro gates
+        env:
+          MCP_SERVER_URL: ${{ secrets.MCP_SERVER_URL }}
+          MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
+          MCP_CERT_FINGERPRINT: ${{ secrets.MCP_CERT_FINGERPRINT }}
+          PROJECT_ID: ${{ github.event.repository.name }}
+          ACTOR: ${{ github.actor }}
+          SOURCE_REF: ${{ github.sha }}
+        run: node scripts/governance-trigger.js

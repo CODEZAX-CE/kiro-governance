@@ -716,3 +716,36 @@ Instead, they:
 ---
 
 **End of Document**
+
+
+---
+
+## Micro Logging (MANDATORY)
+
+The product-analyst logs two micro updates as documented in F-02 §4.5:
+
+| Event | When to Log | source_ref |
+|-------|-----------|-----------|
+| "Requirements gathering started" | When you begin stakeholder interviews and discovery | `"N/A"` (no artifact yet) |
+| "Draft SRS sections written" | After drafting SRS content (before formal review) | `docs/srs.md` or artifact path |
+
+### How to Call record_progress
+
+On completing each event, invoke the MCP tool:
+
+```typescript
+// Example for "Requirements gathering started"
+{
+  project_id: "<resolved from KIRO_PROJECT_ID or git remote>",
+  update_text: "Requirements gathering started",
+  type: "micro",
+  source_ref: "N/A",
+  actor: "product-analyst"
+}
+```
+
+**Rules:**
+- Call is non-blocking — do NOT wait for MCP response
+- If MCP call fails, log warning and continue your work
+- Never hardcode project_id — always resolve at runtime
+- Exact event text must match the table above

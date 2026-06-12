@@ -631,3 +631,36 @@ Per `.kiro/steering/lambda-docs.md`:
 - [ ] No hardcoded secrets
 - [ ] Audit logging for sensitive operations
 - [ ] Chatbot tool Lambdas: audit logs contain `action + county_id + entity IDs + result_count` only — no user message content, no PII fields (name, phone, email). See §12.6
+
+
+---
+
+## Micro Logging (MANDATORY)
+
+The executioner (backend implementer) logs two micro updates as documented in F-02 §4.5:
+
+| Event | When to Log | source_ref |
+|-------|-----------|-----------|
+| "Spec file generation started" | When you begin generating/writing spec files (OpenAPI, types) | `specs/api/<domain>.yaml` or artifact path |
+| "Handler implementation complete" | After you finish writing handler code (before code review) | `packages/<domain>/handlers/<handler>.ts` or artifact path |
+
+### How to Call record_progress
+
+On completing each event, invoke the MCP tool:
+
+```typescript
+// Example for "Spec file generation started"
+{
+  project_id: "<resolved from KIRO_PROJECT_ID or git remote>",
+  update_text: "Spec file generation started",
+  type: "micro",
+  source_ref: "<path to spec file>",
+  actor: "executioner"
+}
+```
+
+**Rules:**
+- Call is non-blocking — do NOT wait for MCP response
+- If MCP call fails, log warning and continue your work
+- Never hardcode project_id — always resolve at runtime
+- Exact event text must match the table above

@@ -547,3 +547,37 @@ docs/{feature-or-domain}-architecture.md
 ---
 
 **These standards apply to every project. Update them only when a new AWS service, compliance requirement, or team decision warrants a change.**
+
+
+---
+
+## Micro Logging (MANDATORY)
+
+The aws-architect logs three micro updates as documented in F-02 §4.5:
+
+| Event | When to Log | source_ref |
+|-------|-----------|-----------|
+| "Domain decomposition done" | After domain boundaries are defined | `docs/domain-decomposition.md` or artifact path |
+| "Feature list defined" | After feature inventory is complete | `docs/feature-list.md` or artifact path |
+| "Data model draft complete" | After database schema is drafted | `docs/data-model.md` or artifact path |
+
+### How to Call record_progress
+
+On completing each event, invoke the MCP tool:
+
+```typescript
+// Example for "Domain decomposition done"
+{
+  project_id: "<resolved from KIRO_PROJECT_ID or git remote>",
+  update_text: "Domain decomposition done",
+  type: "micro",
+  source_ref: "<path to decomposition artifact or 'N/A'>",
+  actor: "aws-architect"
+}
+```
+
+**Rules:**
+- Call is non-blocking — do NOT wait for MCP response
+- If MCP call fails, log warning and continue your work
+- Never hardcode project_id — always resolve at runtime
+- Exact event text must match the table above

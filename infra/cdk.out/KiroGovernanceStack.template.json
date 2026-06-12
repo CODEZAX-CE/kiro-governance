@@ -1,0 +1,481 @@
+{
+ "Description": "Kiro Governance — F-04 Data & Persistence (DynamoDB + IAM + SSM)",
+ "Resources": {
+  "GovernanceTracker3210A520": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "pk",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "sk",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "type",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "created_at",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "gate",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "DeletionProtectionEnabled": true,
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "gsi-type-created",
+      "KeySchema": [
+       {
+        "AttributeName": "type",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "created_at",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     },
+     {
+      "IndexName": "gsi-gate-created",
+      "KeySchema": [
+       {
+        "AttributeName": "gate",
+        "KeyType": "HASH"
+       },
+       {
+        "AttributeName": "created_at",
+        "KeyType": "RANGE"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "pk",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "sk",
+      "KeyType": "RANGE"
+     }
+    ],
+    "PointInTimeRecoverySpecification": {
+     "PointInTimeRecoveryEnabled": true
+    },
+    "TableName": "kiro-governance-tracker"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/GovernanceTracker/Resource"
+   }
+  },
+  "McpServerRoleA1D35EE2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "MCP Server EC2 instance role for governance data writes",
+    "RoleName": "kiro-gov-mcp-server-role"
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServerRole/Resource"
+   }
+  },
+  "McpServerRoleDefaultPolicyA69F5DAB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:Query"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "GovernanceTracker3210A520",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "GovernanceTracker3210A520",
+             "Arn"
+            ]
+           },
+           "/index/*"
+          ]
+         ]
+        }
+       ],
+       "Sid": "DynamoDBWrite"
+      },
+      {
+       "Action": "ssm:GetParameter",
+       "Effect": "Allow",
+       "Resource": "arn:aws:ssm:us-east-1:504649076991:parameter/kiro-governance/*",
+       "Sid": "SSMReadConfig"
+      },
+      {
+       "Action": "kms:Decrypt",
+       "Condition": {
+        "StringEquals": {
+         "kms:ViaService": "ssm.us-east-1.amazonaws.com"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": "arn:aws:kms:us-east-1:504649076991:key/*",
+       "Sid": "KmsDecryptSsm"
+      },
+      {
+       "Action": [
+        "dynamodb:DeleteItem",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Deny",
+       "Resource": {
+        "Fn::GetAtt": [
+         "GovernanceTracker3210A520",
+         "Arn"
+        ]
+       },
+       "Sid": "DenyAppendOnlyViolation"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "McpServerRoleDefaultPolicyA69F5DAB",
+    "Roles": [
+     {
+      "Ref": "McpServerRoleA1D35EE2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServerRole/DefaultPolicy/Resource"
+   }
+  },
+  "McpServerInstanceProfile1F08EBDA": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "McpServerRoleA1D35EE2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServerInstanceProfile/Resource"
+   }
+  },
+  "McpServerSg491ADA4C": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "kiro-governance MCP server",
+    "GroupName": "kiro-gov-mcp-server-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "HTTPS MCP server",
+      "FromPort": 443,
+      "IpProtocol": "tcp",
+      "ToPort": 443
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "SSH admin access",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     }
+    ],
+    "VpcId": "vpc-09c00748cf2a20907"
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServerSg/Resource"
+   }
+  },
+  "McpServerInstanceProfile1AD95301": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "McpServerRoleA1D35EE2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServer/InstanceProfile"
+   }
+  },
+  "McpServerD7E15234": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": "us-east-1a",
+    "BlockDeviceMappings": [
+     {
+      "DeviceName": "/dev/xvda",
+      "Ebs": {
+       "Encrypted": true,
+       "VolumeSize": 20
+      }
+     }
+    ],
+    "IamInstanceProfile": {
+     "Ref": "McpServerInstanceProfile1AD95301"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t3.micro",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "McpServerSg491ADA4C",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": "subnet-05c178319cfa2db7b",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "KiroGovernanceStack/McpServer"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash\n#!/bin/bash\nset -euxo pipefail\ncurl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash\nexport NVM_DIR=\"/root/.nvm\"\n[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"\nnvm install 20\nnvm use 20\nnvm alias default 20\nmkdir -p /opt/kiro-governance\nif [ ! -f /opt/kiro-governance/cert.pem ]; then\n  openssl req -x509 -newkey rsa:4096 \\\n    -keyout /opt/kiro-governance/key.pem \\\n    -out /opt/kiro-governance/cert.pem \\\n    -days 365 -nodes \\\n    -subj \"/CN=kiro-governance\"\n  chmod 600 /opt/kiro-governance/key.pem\n  chmod 644 /opt/kiro-governance/cert.pem\nfi\ncat > /opt/kiro-governance/.env.example << 'EOF'\nTABLE_NAME=kiro-governance-tracker\nAWS_REGION=us-east-1\nMCP_API_KEY=REPLACE_WITH_REAL_KEY\nTLS_CERT_PATH=/opt/kiro-governance/cert.pem\nTLS_KEY_PATH=/opt/kiro-governance/key.pem\nPORT=443\nEOF"
+    }
+   },
+   "DependsOn": [
+    "McpServerRoleDefaultPolicyA69F5DAB",
+    "McpServerRoleA1D35EE2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServer/Resource"
+   }
+  },
+  "McpServerEip": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc"
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServerEip"
+   }
+  },
+  "McpServerEipAssoc": {
+   "Type": "AWS::EC2::EIPAssociation",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "McpServerEip",
+      "AllocationId"
+     ]
+    },
+    "InstanceId": {
+     "Ref": "McpServerD7E15234"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServerEipAssoc"
+   }
+  },
+  "TableNameParam3E3123DC": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Description": "DynamoDB table name for governance events",
+    "Name": "/kiro-governance/config/table-name",
+    "Type": "String",
+    "Value": {
+     "Ref": "GovernanceTracker3210A520"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/TableNameParam/Resource"
+   }
+  },
+  "RegionParamA268938E": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Description": "AWS region for DynamoDB and other services",
+    "Name": "/kiro-governance/config/region",
+    "Type": "String",
+    "Value": "us-east-1"
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/RegionParam/Resource"
+   }
+  },
+  "McpServerLogGroup7FAD27A8": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/kiro-governance/mcp-server",
+    "RetentionInDays": 30
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/McpServerLogGroup/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/11PTWvDMAz9Lb072hYI9DrGGIXCQtr7UBw3qI2tYtkrwfi/jyTNWHd6HzzpSSWU1RZeNniTQneXYqAW0iGgvii8yVfqRoeWuxbSEdvBqLeTm0lWhBZSw4s3Y80D6XGSd7ZzEtBpU3s+0RL8Z2VldAnpYHT0FMYPz/E6xR6Ndejvgom/7+o7vIqwJgzELisRO/3gyfU1erQmGD9ftYqsBu4F0p7738aV56waIxz9UvGw4DOGawxZOe4MnOXpu6yggufNWYgKH10ga6BZ8Ad9yLAoWQEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "KiroGovernanceStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Outputs": {
+  "TableName": {
+   "Description": "DynamoDB table name for governance events",
+   "Value": {
+    "Ref": "GovernanceTracker3210A520"
+   },
+   "Export": {
+    "Name": "KiroGovernanceTrackerTable"
+   }
+  },
+  "TableArn": {
+   "Description": "DynamoDB table ARN",
+   "Value": {
+    "Fn::GetAtt": [
+     "GovernanceTracker3210A520",
+     "Arn"
+    ]
+   }
+  },
+  "McpServerRoleName": {
+   "Description": "IAM role for MCP server EC2 instance",
+   "Value": {
+    "Ref": "McpServerRoleA1D35EE2"
+   },
+   "Export": {
+    "Name": "KiroGovernanceMcpServerRole"
+   }
+  },
+  "McpServerRoleArn": {
+   "Description": "ARN of MCP server role",
+   "Value": {
+    "Fn::GetAtt": [
+     "McpServerRoleA1D35EE2",
+     "Arn"
+    ]
+   }
+  },
+  "InstanceProfileArn": {
+   "Description": "Instance profile ARN for EC2 instances",
+   "Value": {
+    "Fn::GetAtt": [
+     "McpServerInstanceProfile1F08EBDA",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "KiroGovernanceMcpServerInstanceProfile"
+   }
+  },
+  "ElasticIP": {
+   "Description": "MCP Server Elastic IP — use for MCP_SERVER_URL and SSH access",
+   "Value": {
+    "Ref": "McpServerEip"
+   },
+   "Export": {
+    "Name": "KiroGovernanceMcpServerEIP"
+   }
+  },
+  "McpServerInstanceId": {
+   "Description": "EC2 instance ID for MCP server",
+   "Value": {
+    "Ref": "McpServerD7E15234"
+   }
+  },
+  "McpServerSecurityGroupId": {
+   "Description": "Security group ID for MCP server",
+   "Value": {
+    "Fn::GetAtt": [
+     "McpServerSg491ADA4C",
+     "GroupId"
+    ]
+   }
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

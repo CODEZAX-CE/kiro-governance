@@ -1,0 +1,32 @@
+{
+  "name": "kiro-governance",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Governance event tracking MCP server & infrastructure",
+  "workspaces": [
+    "packages/*",
+    "infra"
+  ],
+  "scripts": {
+    "build": "npm run build -ws",
+    "test": "jest --passWithNoTests",
+    "lint": "eslint . --ext .ts",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "aws-cdk": "^2.100.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.2.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.100.0",
+    "constructs": "^10.2.0"
+  }
+}

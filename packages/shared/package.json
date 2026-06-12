@@ -1,0 +1,19 @@
+{
+  "name": "@kiro-governance/shared",
+  "version": "1.0.0",
+  "description": "Shared constants and types across kiro-governance domains",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./constants/*": "./dist/constants/*.js",
+    "./types/*": "./dist/types/*.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.0"
+  }
+}

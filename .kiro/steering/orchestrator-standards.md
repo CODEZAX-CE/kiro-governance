@@ -153,6 +153,173 @@ Security controls include:
 
 ---
 
+## Governance Gates (MANDATORY)
+
+After each sub-agent completes a macro-gate artifact, you MUST invoke the human-approval gate:
+
+### Governance Gates Overview
+
+The 10 canonical macro gates require explicit human approval before proceeding:
+
+| # | Gate | Phase | Sub-Agent | Typical Artifact |
+|---|------|-------|-----------|------------------|
+| 1 | Discovery outputs validated | Phase 1 | product-analyst | Meeting notes summary |
+| 2 | Preliminary SRS validated | Phase 1 | product-analyst | Draft SRS (v0.1) |
+| 3 | SRS approved | Phase 1 | product-analyst | Final SRS (v1.0) |
+| 4 | Design docs approved | Phase 2 | aws-architect | Architecture doc + diagrams |
+| 5 | Implementation plan approved | Phase 2 | plan-reviewer | Sprint backlog + timeline |
+| 6 | Spec file approved | Phase 3 | executioner | Implementation spec (this file type) |
+| 7 | Code approved | Phase 3 | code-reviewer | Pull request review |
+| 8 | UAT report approved | Phase 3 | qa-agent | Test results + sign-off |
+| 9 | Runbooks approved | Phase 4 | aws-architect | Operational runbooks |
+| 10 | Project documentation approved | Phase 4 | aws-architect | Final project docs |
+
+> **Source:** SRS §16 — Canonical macro gates. Gate names MUST match exactly (including capitalization).
+
+### Gate Presentation & Approval Flow
+
+When a sub-agent completes an artifact for a macro gate:
+
+**Step 1: Present to Human**
+
+```
+────────────────────────────────────────────
+🏁 GOVERNANCE GATE: [GATE NAME]
+────────────────────────────────────────────
+Artifact: [path/to/artifact]
+Produced by: [sub-agent name]
+Gate Phase: [Phase number]
+
+Summary:
+[2-3 sentence description of what was produced]
+
+────────────────────────────────────────────
+Please review and respond:
+  • "approve" — sign off this gate, record to governance DB + Slack
+  • "reject [feedback]" — return to sub-agent for rework
+────────────────────────────────────────────
+```
+
+**Step 2: Await Human Response**
+
+- Wait for human to enter "approve" or "reject [feedback]"
+- Do NOT timeout — Kiro CLI sessions remain open indefinitely
+
+### On Approval
+
+When human enters "approve":
+
+1. **Resolve project_id** (in priority order):
+   - Check environment variable `KIRO_PROJECT_ID`
+   - If not set: parse GitHub repo name from `git remote get-url origin`
+   - If not available: read `.kiro/project.json` → `projectId` field
+   - If all fail: inform human "Cannot determine project_id. Please set KIRO_PROJECT_ID environment variable." — **do not proceed**
+
+2. **Resolve actor** (in priority order):
+   - Read `git config user.name` from local git config
+   - If empty: ask human "Who is approving this gate? (name or ID)"
+
+3. **Call MCP Tool: `record_progress`**
+
+   ```
+   {
+     project_id: <resolved-from-step-1>,
+     update_text: "[GATE_NAME] approved by [actor]",
+     type: "macro",
+     gate: "[canonical gate name]",
+     phase: "[Phase N]",
+     source_ref: "[artifact-path]",
+     actor: <resolved-from-step-2>,
+   }
+   ```
+
+   Wait for response: `{ written: boolean, reason?: string }`
+
+4. **Check Result:**
+   - If `{ written: true }` → proceed to step 5
+   - If `{ written: false, reason: 'duplicate' }` → log "Gate already recorded (likely by GitHub Actions). Proceeding." → skip step 5, proceed with workflow
+   - If `{ written: false }` with other reason → log error and proceed (non-blocking)
+   - If MCP call throws (connection error, timeout) → log "⚠️ Governance recording failed: [error]. Gate approval is valid. Proceeding." → proceed with workflow
+
+5. **Call MCP Tool: `notify_slack`** (ONLY if step 4 returned `{ written: true }`)
+
+   ```
+   {
+     project_id: <same-as-above>,
+     message: "[GATE_NAME] approved by [actor] — artifact: [source_ref]",
+     event_type: "macro",
+   }
+   ```
+
+   Wait for response: `{ notified: boolean, reason?: string }`
+
+   - If error or timeout: log warning and **continue** (Slack is best-effort, not blocking)
+
+6. **Proceed with Workflow**
+
+   After MCP calls complete (or fail), proceed to next phase/agent
+
+### On Rejection
+
+When human enters "reject [feedback]":
+
+1. Capture the feedback text (everything after "reject ")
+2. **DO NOT call any MCP tools** — rejections are not governance events
+3. Return artifact to the validating sub-agent with the feedback:
+   ```
+   Human rejected [GATE_NAME]. Feedback: [feedback-text]
+   
+   Please rework the artifact and re-submit for review.
+   ```
+4. The gate re-fires when the sub-agent resubmits (go back to §4.2 Step 1)
+
+### Micro Update Logging (Non-Blocking, Best Effort)
+
+Throughout workflow execution, sub-agents log micro updates via the MCP `record_progress` tool. These provide delivery leads with progress visibility without human gates or Slack notifications.
+
+**When micro updates fire:**
+
+- Sub-agent completes a significant milestone (e.g., "Domain decomposition done", "Spec file generation started")
+- Call `record_progress` with `type: "micro"` (not "macro")
+- No human approval needed, no Slack notification
+
+**Micro event examples:**
+
+| Event | Sub-Agent | Trigger |
+|-------|-----------|---------|
+| "Domain decomposition done" | aws-architect | Architecture design complete |
+| "Feature list defined" | aws-architect | Feature enumeration complete |
+| "Data model draft complete" | aws-architect | Data model schema written |
+| "Requirements gathering started" | product-analyst | Task delegation received |
+| "Draft SRS sections written" | product-analyst | Intermediate SRS progress |
+| "Architecture review started" | plan-reviewer | Review delegation received |
+| "Review findings documented" | plan-reviewer | Review complete (before gate) |
+| "Spec file generation started" | executioner | Spec task received |
+| "Handler implementation complete" | executioner | Code written (before review) |
+| "Test plan created" | qa-agent | QA task received |
+| "Code review started" | code-reviewer | Review delegation received |
+
+**Micro logging pattern:**
+
+```
+{
+  project_id: "<resolved from KIRO_PROJECT_ID env or git remote>",
+  update_text: "<exact event text from the table above>",
+  type: "micro",
+  source_ref: "<file path if applicable, or 'N/A'>",
+  actor: "<your agent name, e.g. 'aws-architect'>",
+  // omit: gate, phase, flag_override
+}
+```
+
+**Error handling for micro updates:**
+
+- If the MCP call fails (connection error, timeout): log a warning and **continue** — micro updates are best-effort, not blocking
+- Micro updates do NOT require human approval and do NOT trigger Slack notifications
+- They are audit trail only
+
+---
+
 ## Agent Progress Monitoring
 
 ### Expected Durations

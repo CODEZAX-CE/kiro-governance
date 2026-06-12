@@ -1,0 +1,364 @@
+{
+  "/KiroGovernanceStack": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/GovernanceTracker": [
+    {
+      "type": "aws:cdk:hasPhysicalName",
+      "data": {
+        "Ref": "GovernanceTracker3210A520"
+      }
+    }
+  ],
+  "/KiroGovernanceStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--al2023-ami-kernel-6.1-x86_64:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Instance2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:190:22)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerEip": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerEip"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:205:17)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerEipAssoc": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerEipAssoc"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:206:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/TableName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TableName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:249:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/TableArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TableArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:255:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerRoleName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerRoleName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:260:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerRoleArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerRoleArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:266:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/InstanceProfileArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "InstanceProfileArn"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:271:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/ElasticIP": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ElasticIP"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:277:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerInstanceId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerInstanceId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:283:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerSecurityGroupId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerSecurityGroupId"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:288:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/GovernanceTracker/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "GovernanceTracker3210A520"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:30:18)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerRoleA1D35EE2"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Role2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:70:26)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerInstanceProfile/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerInstanceProfile1F08EBDA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new InstanceProfile2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:131:29)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerSg491ADA4C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new SecurityGroup2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:145:16)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServer/InstanceProfile": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerInstanceProfile1AD95301"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Instance2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:190:22)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerD7E15234"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Instance2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:190:22)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/TableNameParam/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TableNameParam3E3123DC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new StringParameter2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:216:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/RegionParam/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RegionParamA268938E"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new StringParameter2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:223:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerLogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerLogGroup7FAD27A8"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new LogGroup2 in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:242:5)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...App.synth in aws-cdk-lib...",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:14:5)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/KiroGovernanceStack/McpServerRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "McpServerRoleDefaultPolicyA69F5DAB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.<anonymous> in aws-cdk-lib...",
+        "new GovernanceStack (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/stacks/governance-stack.ts:77:24)",
+        "<anonymous> (/Users/ce-it-faraz/Desktop/CODE/kiro-governance/infra/bin/app.ts:6:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ]
+}

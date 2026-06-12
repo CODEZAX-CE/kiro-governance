@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "kiro-governance": {
+      "type": "remote",
+      "url": "${KIRO_GOV_MCP_URL}",
+      "headers": {
+        "X-API-Key": "${KIRO_GOV_MCP_API_KEY}"
+      },
+      "tlsCertFingerprint": "${MCP_CERT_FINGERPRINT}"
+    }
+  }
+}

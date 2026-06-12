@@ -207,3 +207,36 @@ Is interface defined? → No → Block until contracts agreed
 - [ ] Performance tests validate requirements
 - [ ] Security tests check vulnerabilities
 - [ ] Test data management strategy defined
+
+
+---
+
+## Micro Logging (MANDATORY)
+
+The plan-reviewer logs two micro updates as documented in F-02 §4.5:
+
+| Event | When to Log | source_ref |
+|-------|-----------|-----------|
+| "Architecture review started" | When you receive a spec for review | `<path to spec being reviewed>` |
+| "Review findings documented" | After you complete the review and document findings | `<path to review findings or spec>` |
+
+### How to Call record_progress
+
+On completing each event, invoke the MCP tool:
+
+```typescript
+// Example for "Architecture review started"
+{
+  project_id: "<resolved from KIRO_PROJECT_ID or git remote>",
+  update_text: "Architecture review started",
+  type: "micro",
+  source_ref: "<path to spec artifact>",
+  actor: "plan-reviewer"
+}
+```
+
+**Rules:**
+- Call is non-blocking — do NOT wait for MCP response
+- If MCP call fails, log warning and continue your work
+- Never hardcode project_id — always resolve at runtime
+- Exact event text must match the table above

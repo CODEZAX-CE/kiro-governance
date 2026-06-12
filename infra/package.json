@@ -1,0 +1,19 @@
+{
+  "name": "kiro-governance-infra",
+  "version": "1.0.0",
+  "description": "AWS CDK stack for kiro-governance",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "aws-cdk": "^2.100.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.2.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.100.0",
+    "constructs": "^10.2.0"
+  }
+}
