@@ -122,17 +122,14 @@ function callMcpTool(toolName, params) {
         res.on('data', chunk => { data += chunk; });
         res.on('end', () => {
           try {
-            // MCP server may respond with SSE format: "data: {...}\n\n"
-            // or plain JSON depending on transport negotiation
-            const trimmed = data.trim();
-            let parsed;
-            if (trimmed.startsWith('data:')) {
-              const jsonStr = trimmed.replace(/^data:\s*/m, '').trim();
-              parsed = JSON.parse(jsonStr);
+            // MCP server responds with SSE format: "event: message\ndata: {...}\n\n"
+            // Extract the data: line and parse it
+            const dataLine = data.split('\n').find(line => line.startsWith('data:'));
+            if (dataLine) {
+              resolve(JSON.parse(dataLine.slice(5).trim()));
             } else {
-              parsed = JSON.parse(trimmed);
+              resolve(JSON.parse(data.trim()));
             }
-            resolve(parsed);
           } catch (err) {
             reject(new Error(`Failed to parse MCP response: ${err.message}. Raw: ${data.slice(0, 200)}`));
           }
