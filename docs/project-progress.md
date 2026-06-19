@@ -6,6 +6,7 @@
 - [x] 0.2 Compliance check — **None required** (internal developer tooling POC; no HIPAA/SOC2/PCI-DSS/CCPA/GDPR data) (confirmed by human 2026-06-10)
 
 ### Open Questions (Phase 0)
+
 - ✅ **RESOLVED — GitHub Agent mechanism:** Architect decision — **GitHub Actions workflow** (`.github/workflows/governance-trigger.yml`). Triggers on commit/merge when `project-progress.md` changes; processes macro-gate entries only. Micro events logged directly by sub-agents via MCP server. Resolved in SRS v1.1, confirmed in architect review round 2.
 
 ## Phase 1: SRS
@@ -15,31 +16,17 @@
 - [x] 1.3 Product analyst fixes — SRS v1.1 (2026-06-10)
 - [x] 1.2 Architect review round 2 — 1 new High finding FINDING-09 (2026-06-10)
 - [x] 1.3 Product analyst fixes — SRS v1.2 (2026-06-10)
-- [x] 1.4 SRS approved — architect approved SRS v1.4, zero Critical/High issues (2026-06-10)
-      - OQ-01: One Slack webhook per project channel ✅
-      - OQ-02: project_id = GitHub repository name (e.g. `rainn`, `icvics`) — customer decision Tariq Khan 2026-06-11 ✅
-      - OQ-03: Dashboard = Amazon QuickSight via Athena federated query ✅
-      - OQ-04: Secrets = SSM Parameter Store ✅
-      - Cost revised to ~$25–30/mo (QuickSight ~$12 + Athena ~$5 added)
+- [x] 1.4 SRS approved — architect approved SRS v1.4, zero Critical/High issues (2026-06-10) - OQ-01: One Slack webhook per project channel ✅ - OQ-02: project_id = GitHub repository name (e.g. `rainn`, `icvics`) — customer decision Tariq Khan 2026-06-11 ✅ - OQ-03: Dashboard = Amazon QuickSight via Athena federated query ✅ - OQ-04: Secrets = SSM Parameter Store ✅ - Cost revised to ~$25–30/mo (QuickSight ~$12 + Athena ~$5 added)
 
 ## Phase 2: Architecture
 
 - [x] 2.1 Domain decomposition — 5 domains, 9/9 FRs mapped, approved by plan reviewer + product analyst (2026-06-11)
 - [x] 2.2 Feature list — 5 features (F-01 to F-05), approved by plan reviewer + product analyst (2026-06-11)
-- [x] 2.3 Per-feature architecture docs — 5 docs (F-01 to F-05), all approved by plan reviewer (2026-06-11)
-      - F-04: data-persistence-architecture.md v1.3
-      - F-01: mcp-server-core-architecture.md v1.2
-      - F-02: agent-integration-architecture.md v1.2
-      - F-03: github-trigger-architecture.md v1.3
-      - F-05: reporting-architecture.md v1.0
-      - H2 hallucination audit: PASSED (2026-06-11)
+- [x] 2.3 Per-feature architecture docs — 5 docs (F-01 to F-05), all approved by plan reviewer (2026-06-11) - F-04: data-persistence-architecture.md v1.3 - F-01: mcp-server-core-architecture.md v1.2 - F-02: agent-integration-architecture.md v1.2 - F-03: github-trigger-architecture.md v1.3 - F-05: reporting-architecture.md v1.0 - H2 hallucination audit: PASSED (2026-06-11)
 - [x] 2.4 Security Gate 1 — APPROVED after 3 rounds; TLS self-signed cert (Option B) wired in; all High/Medium resolved (2026-06-11)
-- [x] 2.5 Unified data model — approved by plan reviewer + security reviewer (2026-06-11)
-      - Single-table DynamoDB (kiro-governance-tracker), 2 GSIs, IAM append-only enforced
-      - SSM paths consolidated, S3 buckets documented
+- [x] 2.5 Unified data model — approved by plan reviewer + security reviewer (2026-06-11) - Single-table DynamoDB (kiro-governance-tracker), 2 GSIs, IAM append-only enforced - SSM paths consolidated, S3 buckets documented
 - [x] 2.5a Security Gate 1.5 — data model — APPROVED after 3 rounds (2026-06-11)
-- [x] 2.6 Technical architecture diagram — approved by plan reviewer after 2 rounds (2026-06-11)
-      - kiro-governance-architecture.drawio — 5 domains, 12 flows, Lambda connector, SG boundary
+- [x] 2.6 Technical architecture diagram — approved by plan reviewer after 2 rounds (2026-06-11) - kiro-governance-architecture.drawio — 5 domains, 12 flows, Lambda connector, SG boundary
 - [x] 2.7 Security Gate 2 — Well-Architected review APPROVED; 0 Critical/High; 3 Medium (non-blocking); SEC-1 CDK fix applied (2026-06-11)
 - [x] 2.8 Cost estimate — ~$20.49/mo (EC2 $8.47 + QuickSight $12.00 + S3 ~$0.02); AWS Budgets alarm at $35/mo recommended (2026-06-11)
 
@@ -54,11 +41,12 @@
 - [x] 3.6 Backlog approved — ready for implementation (2026-06-11)
 
 ### Final Sprint Plan (post-CR)
-| Sprint | Stories | Pts | Focus |
-|--------|---------|-----|-------|
-| Sprint 1 | KG-01 to KG-05 | 18 | CDK infra + EC2 + MCP Server |
-| Sprint 2 | KG-06 to KG-09 | 16 | Agent integration + GitHub Actions workflow |
-| Sprint 3 | KG-13, KG-14 | 7  | Kiro CLI integration test + runbooks |
+
+| Sprint   | Stories        | Pts | Focus                                       |
+| -------- | -------------- | --- | ------------------------------------------- |
+| Sprint 1 | KG-01 to KG-05 | 18  | CDK infra + EC2 + MCP Server                |
+| Sprint 2 | KG-06 to KG-09 | 16  | Agent integration + GitHub Actions workflow |
+| Sprint 3 | KG-13, KG-14   | 7   | Kiro CLI integration test + runbooks        |
 
 ## Phase 4: Implementation
 
@@ -81,13 +69,3 @@
 
 - [x] KG-13 End-to-end integration test runbook via Kiro CLI — approved (2026-06-11)
 - [x] KG-14 Runbooks (cert-rotation, ec2-deploy, auto-recovery alarm) — approved (2026-06-11)
-
-- [x] SRS approved by Faraz
-- [x] Design docs approved by Faraz
-- [x] Implementation plan approved by Faraz
-- [x] Code approved by Faraz
-- [x] Runbooks approved by Faraz
-- [x] Project documentation approved by Faraz
-- [x] UAT report approved by Faraz
-- [x] UAT report approved by Faraz
-- [x] UAT report approved by Faraz

@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "npm run build -ws",
+    "package-governance": "cp -r .kiro/governance .kiro/mcp.json /tmp/kiro-governance-template/ 2>/dev/null; echo 'Governance files ready in .kiro/governance/ — run .kiro/governance/onboard.sh to onboard a project'",
     "test": "jest --passWithNoTests",
     "lint": "eslint . --ext .ts",
     "cdk": "cdk"

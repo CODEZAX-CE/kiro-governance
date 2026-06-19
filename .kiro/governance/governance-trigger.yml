@@ -22,15 +22,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install shared package dependencies
-        run: npm ci
-        working-directory: packages/shared
-
-      - name: Build shared package
-        run: npm run build
-        working-directory: packages/shared
-
-      - name: Extract diff and process macro gates
+      - name: Process macro gates
         env:
           MCP_SERVER_URL: ${{ secrets.MCP_SERVER_URL }}
           MCP_API_KEY: ${{ secrets.MCP_API_KEY }}
@@ -38,4 +30,5 @@ jobs:
           PROJECT_ID: ${{ github.event.repository.name }}
           ACTOR: ${{ github.actor }}
           SOURCE_REF: ${{ github.sha }}
-        run: node scripts/governance-trigger.js
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node .kiro/governance/governance-trigger.js
