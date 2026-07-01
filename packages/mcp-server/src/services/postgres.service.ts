@@ -1,5 +1,6 @@
 import { Signer } from '@aws-sdk/rds-signer';
 import { Pool } from 'pg';
+import { readFileSync } from 'fs';
 import { GovernanceEventRecord } from '@kiro-governance/shared/types/governance-event';
 
 let pool: Pool | null = null;
@@ -46,7 +47,10 @@ async function getPool(): Promise<Pool> {
       database: process.env.DB_NAME!,
       user: process.env.DB_USER!,
       password: token,
-      ssl: { rejectUnauthorized: true },
+      ssl: {
+        rejectUnauthorized: true,
+        ca: readFileSync(process.env.RDS_CA_BUNDLE_PATH || '/opt/kiro-governance/rds-ca-bundle.pem', 'utf8'),
+      },
       max: 5,
       idleTimeoutMillis: 30000,
     });
