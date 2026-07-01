@@ -36,6 +36,7 @@ export interface RecordProgressOutput {
  */
 export function registerRecordProgress(
   server: McpServer,
+  _config?: unknown,
 ): void {
   server.tool(
     'record_progress',
