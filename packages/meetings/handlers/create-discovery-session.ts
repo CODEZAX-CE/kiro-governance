@@ -19,7 +19,7 @@ export const handler: APIGatewayProxyHandler = withRoles(
   ['pm', 'leadership', 'admin'],
   withLogging(async (event) => {
     try {
-      const projectId = event.pathParameters?.id;
+      const projectId = event.pathParameters?.projectId;
 
       if (!projectId) {
         throw new ValidationError('Project ID is required');

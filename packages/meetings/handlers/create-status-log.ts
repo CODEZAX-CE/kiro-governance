@@ -19,7 +19,7 @@ export const handler: APIGatewayProxyHandler = withRoles(
   ['pm', 'leadership', 'admin'],
   withLogging(async (event) => {
     try {
-      const projectId = event.pathParameters?.id;
+      const projectId = event.pathParameters?.projectId;
       const userEmail = event.requestContext?.authorizer?.claims?.['email'] || 'unknown';
 
       if (!projectId) {

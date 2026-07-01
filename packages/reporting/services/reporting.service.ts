@@ -168,7 +168,7 @@ SELECT
   ROUND(
     (COUNT(mc.reached_at)::numeric / NULLIF(COUNT(*), 0)) * 100,
     1
-  )::numeric AS completion_pct
+  )::float AS completion_pct
 FROM macro_checkpoints mc
 INNER JOIN projects p ON p.jira_key = mc.project_id
 WHERE p.status NOT IN ('Closed', 'TEMPLATE')

@@ -349,7 +349,7 @@ function DashboardPage(): JSX.Element {
                   </TableHeader>
                   <TableBody>
                     {[...summary.gate_completion_rates]
-                      .sort((a, b) => a.completion_pct - b.completion_pct)
+                      .sort((a, b) => Number(a.completion_pct) - Number(b.completion_pct))
                       .map((g) => (
                         <TableRow key={g.checkpoint_name}>
                           <TableCell className="font-medium text-foreground">
@@ -361,16 +361,16 @@ function DashboardPage(): JSX.Element {
                           <TableCell>
                             <div className="flex items-center gap-3">
                               <Progress
-                                value={g.completion_pct}
-                                className={cn('h-2 flex-1', completionBarClass(g.completion_pct))}
+                                value={Number(g.completion_pct)}
+                                className={cn('h-2 flex-1', completionBarClass(Number(g.completion_pct)))}
                               />
                               <span
                                 className={cn(
                                   'w-12 shrink-0 text-right text-xs font-semibold',
-                                  completionTextClass(g.completion_pct)
+                                  completionTextClass(Number(g.completion_pct))
                                 )}
                               >
-                                {g.completion_pct.toFixed(1)}%
+                                {Number(g.completion_pct).toFixed(1)}%
                               </span>
                             </div>
                           </TableCell>

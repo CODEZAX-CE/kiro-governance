@@ -31,7 +31,7 @@ export const handler: APIGatewayProxyHandler = withRoles(
   ['pm', 'sa', 'leadership', 'admin'],
   withLogging(async (event) => {
     try {
-      const projectId = event.pathParameters?.id;
+      const projectId = event.pathParameters?.projectId;
       const checkpointId = event.pathParameters?.checkpointId;
 
       if (!projectId || !checkpointId) {
